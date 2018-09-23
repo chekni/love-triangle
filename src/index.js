@@ -2,31 +2,37 @@
  * @param preferences - an array of integers. Indices of people, whom they love
  * @returns number of love triangles
  */
-function getLoveTrianglesCount(preferences = []) {
-  let count = 0;
+module.exports = function getLoveTrianglesCount(preferences = []) {
+   let count = 0;
 
-    preferences.unshift(-1);
+   let check = [];
 
-  let index = [];
+   preferences.unshift(-1);
+   console.log(preferences);
+   for (let i = 0; i < preferences.length; i++) {
+      check[i] = 0;
+   }
 
-  for (let i = 0; i <= preferences.length; i++){
-      index[i] = 0;
-  }
-    index[0] = 1;
+   let i = 0, first = 0, second = 0, third = 0;
+   check[0] = 1;
+   console.log(check);
 
-    for (let i = 1; i < preferences.length && index[i] != 1; i++){
-      let first = preferences[i];
-      let second = (index[first] == 0 || first == preferences[first]) ? preferences[first] : -1;
-      let third = (index[second] == 0 || secont == preferences[second])? preferences[second] : -1;
-
-      index[i] = 1;
-
-        if (first > 0 && second > 0 && third > 0){
-          if (i == third){
-            index[first] = index[second] = 1;
-            count++;
-          }
-        }
-    }
-    return count;
+   for (i = 1; i < preferences.length; i++) {
+      if (check[i] === 0) {
+         check[i] = 1;
+         first = preferences[i];
+         if (first != i && check[first] === 0) {
+            second = preferences[first];
+            if (second != first && second != i && check[second] === 0) {
+               third = preferences[second];
+               if (i === third) {
+                  check[first] = 1;
+                  check[second] = 1;
+                  count++;
+               }
+            }
+         }
+      }
+   }
+   return count;
 };
